@@ -1,6 +1,8 @@
 import pyaudio
 import wave
 import whisper
+import os
+import numpy
 
 FORMAT = pyaudio.paInt16 #posiblemente haya que cambiar esto a int32
 CHANNELS = 1
@@ -37,6 +39,14 @@ wf.setframerate(RATE)
 wf.writeframes(b''.join(frames))
 wf.close()
 
+directorio_actual = os.path.dirname(os.path.abspath(__file__))
+ruta_del_archivo = os.path.join(directorio_actual, WAVE_OUTPUT_FILENAME)
+f = open(ruta_del_archivo)
+
+print(ruta_del_archivo)
+
+# if(audioExist == True):
 model = whisper.load_model("medium")
-result = model.transcribe(audio="audio.wav", fp16=False)
+result = model.transcribe(audio=WAVE_OUTPUT_FILENAME, fp16=False, language="es")
+
 print(result["text"])
